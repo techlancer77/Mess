@@ -1,6 +1,7 @@
+import "./login.css";
 import loginBg from "../../assets/login-bg.jpg";
 import { FaUser, FaLock, FaEye } from "react-icons/fa";
-import "./login.css";
+
 
 const Login = () => {
   return (
@@ -42,7 +43,7 @@ const Login = () => {
             personalized recommendations
           </p>
 
-         <div className="input-box">
+          <div className="input-box">
   <FaUser className="input-icon" />
   <input type="email" placeholder="ENTER EMAIL" />
 </div>
@@ -53,6 +54,7 @@ const Login = () => {
   <input type="password" placeholder="********" />
   <FaEye className="eye-icon" />
 </div>
+
 
           <div className="options">
             <label>
