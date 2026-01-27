@@ -1,17 +1,18 @@
 import "./login.css";
 import loginBg from "../../assets/login-bg.jpg";
 import { FaUser, FaLock, FaEye } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";   // ✅ add this
 
 const Login = () => {
+  const navigate = useNavigate();                // ✅ add this
+
   return (
     <div className="login-wrapper">
       {/* LEFT IMAGE SECTION */}
       <div
-  className="login-left"
-  style={{ backgroundImage: `url(${loginBg})` }}
->
-
+        className="login-left"
+        style={{ backgroundImage: `url(${loginBg})` }}   // ✅ fixed
+      >
         <div className="welcome-box">
           <h1>
             WELCOME <span>TO</span>
@@ -44,17 +45,15 @@ const Login = () => {
           </p>
 
           <div className="input-box">
-  <FaUser className="input-icon" />
-  <input type="email" placeholder="ENTER EMAIL" />
-</div>
-
+            <FaUser className="input-icon" />
+            <input type="email" placeholder="ENTER EMAIL" />
+          </div>
 
           <div className="input-box">
-  <FaLock className="input-icon" />
-  <input type="password" placeholder="********" />
-  <FaEye className="eye-icon" />
-</div>
-
+            <FaLock className="input-icon" />
+            <input type="password" placeholder="********" />
+            <FaEye className="eye-icon" />
+          </div>
 
           <div className="options">
             <label>
@@ -63,11 +62,18 @@ const Login = () => {
             <a href="#">Forgot password?</a>
           </div>
 
-          <button className="login-btn">LOGIN</button>
+          {/* LOGIN button */}
+         <button className="login-btn">LOGIN</button>
 
-          <p className="bottom-text">
+          {/* DON'T HAVE ACCOUNT */}
+          <p
+            className="bottom-text"
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+            onClick={() => navigate("/owner")}
+          >
             DON'T HAVE ANY ACCOUNT?
           </p>
+
         </div>
       </div>
     </div>
