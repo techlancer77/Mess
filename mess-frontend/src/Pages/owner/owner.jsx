@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./owner.css";
 
 export default function MessForm() {
+  const [step, setStep] = useState(1);
+
   const [formData, setFormData] = useState({
     messName: "",
     ownerName: "",
@@ -14,26 +16,15 @@ export default function MessForm() {
       lunch: false,
       dinner: false,
     },
-    kitchenType: "",
-    cleanliness: "",
-    days: [],
+    serviceType: "",
+    description: "",
+    deliveryService: "",
+    tiffinService: "",
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-   
-    if (name === "days") {
-      setFormData((prev) => ({
-        ...prev,
-        days: checked
-          ? [...prev.days, value]
-          : prev.days.filter((d) => d !== value),
-      }));
-      return;
-    }
-
-    
     if (type === "checkbox") {
       setFormData((prev) => ({
         ...prev,
@@ -45,219 +36,219 @@ export default function MessForm() {
       return;
     }
 
-   
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const nextStep = () => setStep((s) => s + 1);
+  const prevStep = () => setStep((s) => s - 1);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-  
-    console.log("Final JSON:", JSON.stringify(formData, null, 2));
-
-    alert("Check Console (F12 → Console) to see JSON output");
+    console.log("FINAL JSON:", JSON.stringify(formData, null, 2));
+    alert("Check console for your JSON");
   };
 
   return (
     <div className="page">
-
-      <div className="header">
-        <h1>List Your Mess</h1>
-        <p className="subtitle">
-          Reach more students. Manage menus easily. Get verified.
-        </p>
+      {/* STEP UI */}
+      <div className="steps">
+        <div className={`step ${step >= 1 ? "active" : ""}`}>1</div>
+        <div className={`step ${step >= 2 ? "active" : ""}`}>2</div>
+        <div className={`step ${step >= 3 ? "active" : ""}`}>3</div>
       </div>
 
       <form className="form" onSubmit={handleSubmit}>
+        {/* STEP 1 */}
+        {step === 1 && (
+          <section className="card">
+            <h2>Basic Details</h2>
 
-      
-        <section className="card">
-          <h2>Basic Details</h2>
+            <input
+              name="messName"
+              placeholder="Mess Name"
+              value={formData.messName}
+              onChange={handleChange}
+            />
+            <input
+              name="ownerName"
+              placeholder="Owner Name"
+              value={formData.ownerName}
+              onChange={handleChange}
+            />
+            <input
+              name="locality"
+              placeholder="Locality / Area"
+              value={formData.locality}
+              onChange={handleChange}
+            />
+            <input
+              name="contact"
+              placeholder="Contact No"
+              value={formData.contact}
+              onChange={handleChange}
+            />
 
-          <input
-            type="text"
-            placeholder="Mess Name"
-            name="messName"
-            value={formData.messName}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            placeholder="Owner Name"
-            name="ownerName"
-            value={formData.ownerName}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            placeholder="Locality / Area"
-            name="locality"
-            value={formData.locality}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            placeholder="Contact No"
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
-          />
+            <div className="radio-row">
+              {["Veg", "Non-Veg", "Both"].map((f) => (
+                <label key={f}>
+                  <input
+                    type="radio"
+                    name="foodType"
+                    value={f}
+                    checked={formData.foodType === f}
+                    onChange={handleChange}
+                  />{" "}
+                  {f}
+                </label>
+              ))}
+            </div>
 
-          <div className="radio-row">
-            <label>
-              <input
-                type="radio"
-                name="foodType"
-                value="Veg"
-                checked={formData.foodType === "Veg"}
-                onChange={handleChange}
-              /> Veg
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="foodType"
-                value="Non-Veg"
-                checked={formData.foodType === "Non-Veg"}
-                onChange={handleChange}
-              /> Non-Veg
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="foodType"
-                value="Both"
-                checked={formData.foodType === "Both"}
-                onChange={handleChange}
-              /> Both
-            </label>
-          </div>
-        </section>
+            <button type="button" className="submit" onClick={nextStep}>
+              Next →
+            </button>
+          </section>
+        )}
 
-       
-        <section className="card">
-          <h2>Food & Pricing Details</h2>
+        {/* STEP 2 */}
+        {step === 2 && (
+          <section className="card">
+            <h2> Preferences</h2>
 
-          <input
-            type="text"
-            placeholder="Monthly Pricing"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-          />
+            <input
+              name="price"
+              placeholder="Monthly Pricing"
+              value={formData.price}
+              onChange={handleChange}
+            />
 
-          <div className="radio-col">
-            <label>
-              <input
-                type="checkbox"
-                name="breakfast"
-                checked={formData.meals.breakfast}
-                onChange={handleChange}
-              /> Breakfast
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="lunch"
-                checked={formData.meals.lunch}
-                onChange={handleChange}
-              /> Lunch
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="dinner"
-                checked={formData.meals.dinner}
-                onChange={handleChange}
-              /> Dinner
-            </label>
-          </div>
-
-          <label className="upload">
-            Upload Photos (Optional)
-            <input type="file" multiple hidden />
-          </label>
-        </section>
-
-       
-        <section className="card">
-          <h2>Hygiene & Availability</h2>
-
-          <h4>Kitchen Type</h4>
-          <div className="radio-col">
-            <label>
-              <input
-                type="radio"
-                name="kitchenType"
-                value="Home Kitchen"
-                checked={formData.kitchenType === "Home Kitchen"}
-                onChange={handleChange}
-              /> Home Kitchen
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="kitchenType"
-                value="Commercial Kitchen"
-                checked={formData.kitchenType === "Commercial Kitchen"}
-                onChange={handleChange}
-              /> Commercial Kitchen
-            </label>
-          </div>
-
-          <h4>Cleanliness Commitment</h4>
-          <div className="radio-col">
-            <label>
-              <input
-                type="radio"
-                name="cleanliness"
-                value="Daily Cleaning"
-                checked={formData.cleanliness === "Daily Cleaning"}
-                onChange={handleChange}
-              /> Daily Cleaning
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="cleanliness"
-                value="Weekly Cleaning"
-                checked={formData.cleanliness === "Weekly Cleaning"}
-                onChange={handleChange}
-              /> Weekly Cleaning
-            </label>
-          </div>
-
-          <h4>Available Days</h4>
-          <div className="days">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-              <label key={d}>
+            <div className="radio-col">
+              <label>
                 <input
                   type="checkbox"
-                  name="days"
-                  value={d}
-                  checked={formData.days.includes(d)}
+                  name="breakfast"
+                  checked={formData.meals.breakfast}
                   onChange={handleChange}
-                /> {d}
+                />{" "}
+                Breakfast
               </label>
-            ))}
-          </div>
-        </section>
+              <label>
+                <input
+                  type="checkbox"
+                  name="lunch"
+                  checked={formData.meals.lunch}
+                  onChange={handleChange}
+                />{" "}
+                Lunch
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="dinner"
+                  checked={formData.meals.dinner}
+                  onChange={handleChange}
+                />{" "}
+                Dinner
+              </label>
+           
 
-        <section className="card info">
-          🔒 Your details are safe  
-          <br />
-          ⏱ Verification within 24–48 hrs  
-          <br />
-          ✅ Only verified messes go live
-        </section>
+{/* UPLOAD PHOTOS */}
+<label className="upload">
+  Upload Photos (Optional)
+  <input
+    type="file"
+    multiple
+    hidden
+    onChange={(e) => {
+      console.log(e.target.files); // later you can send this to backend
+    }}
+  />
+</label>
+ </div>
 
-        <button className="submit">Submit For Verification</button>
+            <div className="btn-row">
+              <button type="button" className="submit" onClick={prevStep}>
+                ← Back
+              </button>
+              <button type="button" className="submit" onClick={nextStep}>
+                Next →
+              </button>
+            </div>
+          </section>
+        )}
 
-       
+        {/* STEP 3 */}
+        {step === 3 && (
+          <section className="card">
+            <h2>Services & Availability</h2>
 
+            <h4>What do you provide?</h4>
+            <div className="radio-col">
+              {["Meals", "Snacks", "Both"].map((s) => (
+                <label key={s}>
+                  <input
+                    type="radio"
+                    name="serviceType"
+                    value={s}
+                    checked={formData.serviceType === s}
+                    onChange={handleChange}
+                  />{" "}
+                  {s}
+                </label>
+              ))}
+            </div>
+
+            <h4>Description</h4>
+            <textarea
+              className="big-textarea"
+              name="description"
+              placeholder="Describe your mess, food quality, hygiene, special items, timings..."
+              value={formData.description}
+              onChange={handleChange}
+            />
+
+            <h4>Delivery Service?</h4>
+            <div className="radio-col">
+              {["Yes", "No"].map((d) => (
+                <label key={d}>
+                  <input
+                    type="radio"
+                    name="deliveryService"
+                    value={d}
+                    checked={formData.deliveryService === d}
+                    onChange={handleChange}
+                  />{" "}
+                  {d}
+                </label>
+              ))}
+            </div>
+
+            <h4>Tiffin Service?</h4>
+            <div className="radio-col">
+              {["Yes", "No"].map((t) => (
+                <label key={t}>
+                  <input
+                    type="radio"
+                    name="tiffinService"
+                    value={t}
+                    checked={formData.tiffinService === t}
+                    onChange={handleChange}
+                  />{" "}
+                  {t}
+                </label>
+              ))}
+            </div>
+
+            <div className="btn-row">
+              <button type="button" className="submit" onClick={prevStep}>
+                ← Back
+              </button>
+              <button className="submit">Submit For Verification</button>
+            </div>
+          </section>
+        )}
       </form>
     </div>
   );

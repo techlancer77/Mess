@@ -40,9 +40,9 @@ const Login = () => {
       <div className="login-right">
         <div className="login-card">
           <h2>
-            LOG IN TO FIND MESSES
-            <br />
-            NEAR YOU
+            LOG IN TO YOUR MESS
+            
+        
           </h2>
 
           <p className="sub-text">
